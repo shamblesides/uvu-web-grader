@@ -2,7 +2,7 @@
 
 var mongo = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
-const URL = `mongodb://${process.env.IP}:27017/master`;
+const URL = `mongodb://localhost:27017/master`;
 
 
 // Create Method

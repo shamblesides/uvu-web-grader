@@ -5,7 +5,7 @@ let app = angular.module('app', ['angularFileUpload','ui.date']);
 
 app.controller('ctrl', function($scope, $http, FileUploader) {
     
-    const URL = 'https://cs4690-final-project-tysonwhite.c9users.io';
+    const API_URL = '/api/v1';
     const PRJ_TEMPLATE = { 
         "id": "",
         "name": "",
@@ -31,7 +31,7 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
     
     var uploader = $scope.uploader = new FileUploader({
         
-        url: `${URL}/api/v1/upload/0001`
+        url: `${API_URL}/upload/0001`
         //removeAfterUpload: true
     });
 
@@ -81,7 +81,7 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
 
         $scope.uploadHeader = project.name;
         $scope.idPrjUploadingFor = project.id;
-        uploader.url = `${URL}/api/v1/upload/${id}`;
+        uploader.url = `${API_URL}/upload/${id}`;
     };
 
 
@@ -104,14 +104,14 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
 
         $http({
             method: "GET",
-            url: `${URL}/api/v1/assignments.json`
+            url: `${API_URL}/assignments.json`
         }).then(function(res) {
 
             res.data.forEach(function(assnID) {
 
                 $http({
                     method: "GET",
-                    url: `${URL}/api/v1/assignment/${assnID}.json`
+                    url: `${API_URL}/assignment/${assnID}.json`
                 }).then(function(result) {
 
                     $scope.projects.push(JSON.parse(result.data));
@@ -149,7 +149,7 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
 
             $http({
                 method: "GET",
-                url: `${URL}/api/v1/files/${assn.id}`
+                url: `${API_URL}/files/${assn.id}`
             }).then(function(result) {
 
                 assn.files = result.data;
@@ -210,7 +210,7 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
             return;
         }
         
-        $scope.addProjectForm.id = getNewID();
+        $scope.addProjectForm.id = $scope.addProjectForm.name;
         $scope.addProjectForm.dueDate = $scope.date.toISOString();
         $scope.addProjectForm.fileTypes = $scope.fileTypesAsString.split(',');
         
@@ -220,7 +220,7 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
         
         $http({
             method: "POST",
-            url: `${URL}/api/v1/assignment`,
+            url: `${API_URL}/assignment`,
             data: JSON.stringify($scope.addProjectForm),
             contentType: 'application/json'
         }).then(function(res) {
@@ -232,17 +232,6 @@ app.controller('ctrl', function($scope, $http, FileUploader) {
         });
 
         $scope.showAddModal = false;  
-    };
-    
-    function getNewID() {
-        
-        let prjs = $scope.projects.slice();
-        
-        prjs.sort((a,b)=>a.id > b.id);
-        let newID = parseInt(prjs[prjs.length-1].id) + 1;
-        newID = newID + '';
-        
-        return newID.length >= 3 ? newID : new Array(3 - newID.length + 1).join('0') + newID;
     };
     
     $scope.loadPage();
