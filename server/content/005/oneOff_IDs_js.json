@@ -1,0 +1,1 @@
+{"issues":[{"line":1,"msg":"Undeclared 'console'."},{"line":3,"msg":"Undeclared '__dirname'."},{"line":12,"msg":"Bad property name 'readFileSync'."},{"line":20,"msg":"Expected one space between 'function' and '('."},{"line":21,"msg":"Expected 'use strict' before 'student'."},{"line":26,"msg":"Bad property name 'writeFileSync'."}]}

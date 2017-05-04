@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+Create:  (POST)
+
+"/api/v1/assignment/"
+
+    -Give it an assignment JSON and it will write it to a file with the id as its name.
+    -Returns 'success' or 'file already exists'
+
+---------------------------------------------------------------------------
+Read:  (GET)
+
+"/api/v1/assignment/:id.json"
+
+    -Replace :id with the actual id #
+    -Ex: "/api/v1/assignment/003.json"
+    -Returns a JSON object of the assignment with the matching id
+
+---------------------------------------------------------------------------
+Update:  (PUT)
+
+"/api/v1/assignment/:id.json"
+
+    -Give it an assignment JSON and it will write it to the file system
+    -Replace :id with the actual id #
+    -Ex: "/api/v1/assignment/003.json"
+    -Returns JSON object it wrote to file
+
+---------------------------------------------------------------------------
+Delete:  (DELETE)
+
+"/api/v1/assignment/:id.json"
+
+    -Deletes file with the id you give it
+    -Replace :id with the actual id #
+    -Ex: "/api/v1/assignment/003.json"
+    -Returns 'deleted' or 'error'
+
+---------------------------------------------------------------------------
+List:  (GET)
+
+"/api/v1/assignments.json"
+    
+    -Returns list of all fileNames in the assignments folder
+    
+---------------------------------------------------------------------------

@@ -1,0 +1,262 @@
+ <!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Web 3 Final Project</title>
+    
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="Style.css">
+</head>
+<body>
+    <div class="container" ng-app="app" ng-controller="ctrl">
+        <div class="jumbotron">
+            <span>
+                <i class="glyphicon glyphicon-check header-icon"></i>
+                <span class="header-text">Dashboard</span>
+            </span>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 text-left">
+                <button type="button" class="btn btn-default" data-placement="bottom" title="" ng-click="showTiles = true" ng-disabled="showTiles"><span class="glyphicon glyphicon-th-large"></span> Tiles</button>
+                <button type="button" class="btn btn-default" data-placement="bottom" title="" ng-click="tableOnClickHandler()" ng-disabled="!showTiles"><span class="glyphicon glyphicon-th-list"></span> Table</button>
+            </div>
+            <div class="col-xs-4" ng-show="!showTiles"></div>
+            <div class="col-xs-4 text-center" ng-show="showTiles">
+                <input type="file" id="selectFilesInput" nv-file-select="" uploader="uploader" style="display: none;" multiple />
+                <button class="btn btn-default" ng-click="uploader.uploadAll()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !uploader.queue.length"><span class="glyphicon glyphicon-cloud-upload"></span> Upload Files</button>
+                <button class="btn btn-default" ng-click="uploader.clearQueue(); fileFailedUploadMsgs = [];" ng-disabled="!uploader.queue.length"><span class="glyphicon glyphicon-trash"></span> Remove All</button>
+            </div>
+            <div class="col-xs-4 text-right">
+                <button type="button" class="btn btn-default" data-placement="bottom" title="" ng-click="addProject()"><span class="glyphicon glyphicon-plus"></span> Add Project</button>
+            </div>
+        </div>
+        
+        <br><br>
+        
+<!-- Add Project Modal -->
+        <div class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showAddModal">
+            <div class="modal-dialog modal-md">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header add-modal-header">
+                        <div class="row">
+                            <h4 class="col-md-12 text-left"><strong>Create a New Project</strong></h4>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <br>
+                        
+                        <form>
+                            <div class="form-group">
+                            	<div class="row">
+                            	    <div class="col-md-6">
+                                		<label for="projectNameInput">Project Name</label>
+                                		<span class="input-error" ng-show="addProjectErrs.name"> - Invalid Project Name</span>
+                            		</div>
+                            		<label class="col-md-6 text-left" for="dropdown2">
+                                        Due Date - {{ date | date:'dd/MM/yyyy HH:mm' }}
+                                    </label>
+                            	</div>
+                            	<div class="row">
+                            		<div class="col-md-6 text-left">
+                            			<input type="text" id="projectNameInput" ng-model="addProjectForm.name" class="form-control" aria-describedby="nameHelp" placeholder="Project 1">
+                            		</div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                        <input class="form-control-cal" ng-model="date" id="dropdown2" ui-date>
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    
+                            	</div>
+                            </div>
+                            
+                            <br>
+                            
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="fileTypeInput">Permitted File Types</label>
+                                        <span class="input-error" ng-show="addProjectErrs.fileTypes"> - Invalid Input</span>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                                <div class="row">
+                            		<div class="col-md-6">
+                            			<input type="text" id="fileTypeInput" ng-model="fileTypesAsString" class="form-control" placeholder="cpp, h, py, js, css">
+                            		</div>
+                                    <div class="col-md-6"></div>
+                                </div>
+                            </div>
+                            
+                            <br>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="descriptionTextArea">Project Description</label>
+                                        <span class="input-error" ng-show="addProjectErrs.description"> - Invalid Input</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea id="descriptionTextArea" ng-model="addProjectForm.description" class="form-control" rows="5" placeholder="This is a new school project"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="confirmProject()">Confirm</button>
+                        <button type="button" class="btn btn-default" ng-click="showAddModal = false">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- End of Modal -->
+        
+<!-- Table Template -->
+        <div ng-show="!showTiles">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default" ng-repeat="project in projects">
+                    <div class="panel-heading gradient-background" ng-click="updateCurrentTable(project.id)">
+                        <h4 class="panel-title">
+                            <p data-toggle="collapse" data-parent="#accordion">
+                                <strong>{{project.name}}</strong> - {{formateDate(project.dueDate)}}
+                            </p>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse in" ng-show="currentTable == project.id">
+                        <div class="panel-body">
+                            
+                            <div ng-hide="project.files.length">
+                                <p>No Files Submitted</p>
+                            </div>
+                            
+                                <!-- Inner pannel -->
+                                <div ng-repeat="file in project.files" ng-hide="!project.files.length">
+                                    
+                                    <div class = "panel panel-default" ng-hide="file.hasIssues">
+                                    	<div class = "panel-heading">{{file.name}}</div>
+                                    	<div class = "panel-body">
+                                    		No issues found with this file
+                                    	</div>
+                                    </div>
+
+                                    <div class = "panel panel-danger" ng-hide="!file.hasIssues">
+                                    	<div class = "panel-heading">{{file.name}}</div>
+                                    	<div class = "panel-body">
+                                    		<div ng-show="!file.hasIssues">
+                                    			No issues found with this file
+                                    		</div>
+                                    		<div ng-show="file.hasIssues">
+                                    			<table class="table">
+                                    			    <thead>
+                                        			    <tr>
+                                                            <th>Line Number</th>
+                                                            <th>Warning Message</th>
+                                        			    </tr>
+                                    			    </thead>
+                                    				<tr ng-repeat="issue in file.content.issues">
+                                    					<th style="font-weight:normal;">{{issue.line}}</th>
+                                    					<th style="font-weight:normal;">{{issue.msg}}</th>
+                                    				</tr>
+                                    			</table>
+                                    		</div>
+                                    	</div>
+                                    </div> 
+                                    
+                                </div>      <!-- End Inner pannel -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- End Table Template -->
+        
+<!-- Tile Template -->
+        <div ng-show="showTiles">
+            
+            <!-- Table to list files to be uploaded  -->
+            <div class="row">
+                <div class="col-xs-6">
+                    <table class="table table-condensed" ng-show="uploader.queue.length || fileFailedUploadMsgs.length">
+                    	<thead>
+                    		<tr>
+                    			<th>Upload files for {{uploadHeader}}</th>
+                    			<th></th>
+                    		</tr>
+                    	</thead>
+                    	<tbody>
+                    	    <tr ng-repeat="err in fileFailedUploadMsgs">
+                    		    <td class="file-error">{{err}}</td>
+                    		</tr>
+                    		<tr ng-repeat="item in uploader.queue" ng-show="uploader.queue.length">
+                    			<td>
+                    			    <strong>{{item.file.name}}</strong>
+                    			    <span class="file-error" ng-show="item.isError">
+                    			        - file upload error
+                    			    </span>
+                    			</td>
+                    			<td nowrap>
+                    				<button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                    					<span class="glyphicon glyphicon-trash"></span> Remove
+                    				</button>
+                    			</td>
+                    		</tr>
+                    	</tbody>
+                    </table>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>      <!-- End of Files to upload table -->
+    
+            <div class="row">
+                <div ng-repeat="project in projects">
+                    <div class="col-md-4">
+                    <div class="panel panel-default project-panels">
+                        <div class="tiled-panel-heading gradient-background panel-heading">
+                            <h4>{{project.name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>Due: </strong>{{formateDate(project.dueDate)}}</p>
+                            <p><strong>Description: </strong>{{project.description}}</p>
+                            <p><strong>File Types: </strong>
+                                <span ng-show="!project.fileTypes.length">Any File Type</span>
+                                <span ng-repeat="filetype in project.fileTypes">{{filetype}}<span ng-show="($index + 1) < project.fileTypes.length">, </span></span>
+                            </p>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary panel-btn" ng-click="uploadFiles(project.id)" onclick="document.getElementById('selectFilesInput').click()" ng-disabled="uploader.queue.length && project.id != idPrjUploadingFor">Select Files</button>    
+                    </div>
+                    </div>
+                </div>      <!-- End of Panel -->
+            </div>
+        </div>      <!-- End of Row -->
+<!-- End Tile Template -->
+            
+        <!--Debugger-->
+        <!--<br><pre>{{projects | json}}</pre>-->
+            
+            
+        <div class="panel panel-default page-footer">
+            <div class="panel-heading" style="border-radius: 0em!important">Web 3 Project</div>
+            <div class="panel-body">
+                Created by Tyson White and Chris Mansfield
+            </div>
+        </div>  
+    </div>      <!-- End of Container -->
+
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-file-upload.min.js"></script>
+    
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="lib/date.js"></script>
+    
+    <script src="ProjectController.js"></script>
+</body>
+</html>

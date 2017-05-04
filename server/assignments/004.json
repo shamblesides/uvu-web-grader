@@ -1,0 +1,11 @@
+{ 
+    "id": "004",
+    "name": "Project 4",
+    "description": "Submit a project in a script language",
+    "dueDate": "2017-05-25T23:59:59-06:00",
+    "fileTypes": [
+        "lua",
+        "ts",
+        "py"
+    ]
+}

@@ -1,0 +1,61 @@
+.cell {
+    text-align: center;
+    background-color: white;
+    color:cadetblue;
+    border-style: double;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+/* Fonts were not loading correctly, and to manually include them */
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('lib/fonts/glyphicons-halflings-regular.eot');
+    src: url('lib/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('lib/fonts/glyphicons-halflings-regular.woff') format('woff'), url('lib/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('lib/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+.student-panels.col-md-3 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.student-panels {
+    max-width: 15em;
+    height: 15em;
+    margin: .80em;
+}
+
+.tiled-panel-heading {
+    padding:  .25rem;
+    border-top-right-radius: 5px!important;
+    border-top-left-radius: 5px!important;
+}
+
+.container h2 {
+    color:cadetblue;
+}
+
+.container button {
+    color:cadetblue;
+    border-color:cadetblue;
+}
+
+.sort {
+    color:cadetblue;
+}
+
+.pad {
+    padding-right: 0.5em;
+    padding-bottom: 1em;
+    padding-left: 0.5em;
+    padding-top: 1em;
+    margin-bottom: 1em;
+	margin-right: 0.5em;
+	margin-left: 0.5em;
+	margin-top: 1em;
+}
+
+
+.centerImage {
+    margin: 0 auto;
+}

@@ -1,0 +1,42 @@
+---- Requirements ----
+
+1. Only allow the student to upload correct filenames, e.g. if the assignment is index.html, don’t allow foo.html and style.css.
+2. Display the names of required file(s).
+3. Allow them to browse file system for file(s), or drag and drop them
+4. Give error message and don’t upload if missing a required file or wrong name
+5. Getting this work with Canvas is out of scope.
+6. The page is controlled by an assignment json doc.
+7. List assignment titles. When a title is selected, the corresponding assignment json is loaded.
+
+
+
+
+----- Todo / Bugs -------
+
+- Setup mongo
+- Finish node apis
+- Determine which apis we need and want
+- Get angular up and going
+
+
+
+
+------- Things to add? ----------
+1. Add assignment buttton (allow user to easily add an assignment)?
+
+
+
+
+
+
+-------- First Week ----------
+1. UI mostly complete, most angular implemented
+2. Populate tile page from master JSON doc
+3. Get node server and all apis working
+4. File system implemented with sample data
+
+
+
+---------- Second Week --------------
+-Mongodb stuff
+

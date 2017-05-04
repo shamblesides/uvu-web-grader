@@ -1,0 +1,26 @@
+{
+  "name": "web-grader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "formidable": "^1.1.1",
+    "jslint": "^0.10.3",
+    "express": "^4.15.2",
+    "describe": "^1.2.0",
+    "mongodb": "^2.2.26",
+    "path": "^0.12.7",
+    "morgan": "^1.8.1",
+    "python-shell": "^0.4.0",
+    "serve-favicon": "^2.4.2",
+    "should": "^11.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

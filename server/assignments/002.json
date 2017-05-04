@@ -1,0 +1,12 @@
+{ 
+    "id": "002",
+    "name": "Project 2",
+    "description": "I love the C-Family!",
+    "dueDate": "2017-05-12T23:59:59-06:00",
+    "fileTypes": [
+        "cs",
+        "c",
+        "cpp",
+        "h"
+    ]
+}
