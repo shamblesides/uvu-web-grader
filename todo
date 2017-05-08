@@ -1,0 +1,7 @@
+== TODO ==
+* fix: display lint results
+* fix: upload files somewhere
+* admin access vs. user access
+* multiple userse
+* client-side linting
+* JSON file configures how linting works { extension, command }
